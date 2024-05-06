@@ -31,6 +31,12 @@ const commands = [
                 ],
                 required: true,
             },
+            {
+                name: 'code',
+                description: 'Input code',
+                type: ApplicationCommandOptionType.String,
+                required: true,
+            },
         ]
     },
 

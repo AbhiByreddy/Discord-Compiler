@@ -1,5 +1,6 @@
 require('dotenv').config();
 const handleMessage = require('./messageHandler');
+const compileLangauge = require('./compiler');
 const {Client, IntentsBitField, EmbedBuilder} = require ('discord.js');
 
 //const {BOT_TOKEN} = require ('.env')
@@ -50,20 +51,30 @@ client.on('interactionCreate', (interaction) =>{
     }
 
     if (interaction.commandName === 'compile'){
+        console.log(`interaction: ${interaction}`);
+
         const language = interaction.options.get('language').value;
-        console.log(language);
+        console.log(`Language: ${language}`);
+
+        const code = interaction.options.get('code').value;
+        console.log(`code: ${code}`);
 
         //set border colors
         let color = 'Random';
         if (language == 'JavaScript'){
             color = 0xffff00;
+            thumbnail = 'https://res.cloudinary.com/teepublic/image/private/s--G1qNjKYf--/t_Preview/b_rgb:191919,c_limit,f_auto,h_630,q_90,w_630/v1539273632/production/designs/3302075_0.jpg';
+            description = compileLangauge(language, code);
         }else if (language == "Python"){
-            color = 0x0000ff;
+            color = 0x1e90ff;
+            thumbnail = 'https://i0.wp.com/tinkercademy.com/wp-content/uploads/2018/04/python-icon.png?ssl=1';
+            description = compileLangauge(language, code);
         }
 
         //embed docs: https://discordjs.guide/popular-topics/embeds.html#embed-preview
         const embed = new EmbedBuilder()
         .setTitle(`Compiling ${language}`)
+        .setThumbnail(thumbnail)
         .setDescription('Compiling description....')
         .setColor(color);
         interaction.reply({embeds: [embed]});
