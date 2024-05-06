@@ -1,6 +1,6 @@
 require('dotenv').config();
 const handleMessage = require('./messageHandler');
-const {Client, IntentsBitField} = require ('discord.js');
+const {Client, IntentsBitField, EmbedBuilder} = require ('discord.js');
 
 //const {BOT_TOKEN} = require ('.env')
 
@@ -52,7 +52,21 @@ client.on('interactionCreate', (interaction) =>{
     if (interaction.commandName === 'compile'){
         const language = interaction.options.get('language').value;
         console.log(language);
-        interaction.reply("you have selected " + language);
+
+        //set border colors
+        let color = 'Random';
+        if (language == 'JavaScript'){
+            color = 0xffff00;
+        }else if (language == "Python"){
+            color = 0x0000ff;
+        }
+
+        //embed docs: https://discordjs.guide/popular-topics/embeds.html#embed-preview
+        const embed = new EmbedBuilder()
+        .setTitle(`Compiling ${language}`)
+        .setDescription('Compiling description....')
+        .setColor(color);
+        interaction.reply({embeds: [embed]});
     }
 })
 

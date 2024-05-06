@@ -1,6 +1,8 @@
 require('dotenv').config();
 const {REST, Routes, ApplicationCommandOptionType} = require('discord.js');
 
+//register commands using node src/register-commands.js
+
 const commands = [
     {
         name: 'hey',
