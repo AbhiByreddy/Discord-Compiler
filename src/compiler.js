@@ -1,8 +1,8 @@
 function compileLangauge(language, code) {
     if (language === 'JavaScript'){
-        return 'compile JS!';
+        return `code: ${code}`;
     }else if (language === "Python"){
-        return 'compile Python!';
+        return `code: ${code}`;
     }
 }
 module.exports = compileLangauge;
