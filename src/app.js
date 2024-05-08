@@ -87,9 +87,12 @@ client.on("interactionCreate", async (interaction) => {
   }
 
   if (interaction.commandName === "compile") {
+    try{
     console.log(`interaction: ${interaction}`);
 
+
     const language = interaction.options.get("language").value;
+
     console.log(`Language: ${language}`);
 
     console.log("before modal");
@@ -120,33 +123,49 @@ client.on("interactionCreate", async (interaction) => {
     //wait 60 seconds
     interaction
       .awaitModalSubmit({ filter, time: 60_000 })
-      .then((modalInteraction) => {
+      .then( async (modalInteraction) => {
         //grab the value from the input box
         const codeValue =
           modalInteraction.fields.getTextInputValue("codeInput");
 
         //create embed and compile code
+        let description = "";
         let color = "Random";
-        if (language == "JavaScript") {
+        let languageName = null;
+
+        if (language == "javascript") {
+          languageName = 'JavaScript';
           color = 0xffff00;
           thumbnail =
             "https://res.cloudinary.com/teepublic/image/private/s--G1qNjKYf--/t_Preview/b_rgb:191919,c_limit,f_auto,h_630,q_90,w_630/v1539273632/production/designs/3302075_0.jpg";
-          description = compileLangauge(language, codeValue);
-        } else if (language == "Python") {
+          description = await compileLangauge(language, codeValue);
+        } else if (language == "python") {
+          languageName = 'Python';
           color = 0x1e90ff;
           thumbnail =
             "https://i0.wp.com/tinkercademy.com/wp-content/uploads/2018/04/python-icon.png?ssl=1";
-          description = compileLangauge(language, codeValue);
+          description = await compileLangauge(language, codeValue);
         }
 
-        console.log(description);
-
         //embed docs: https://discordjs.guide/popular-topics/embeds.html#embed-preview
-        const embed = new EmbedBuilder()
-          .setTitle(`Compiling ${language}`)
+
+        let embed = null;
+        if(description[1]){
+          //is an error
+          embed = new EmbedBuilder()
+          .setTitle(`${languageName} - Compile Failed`)
           .setThumbnail(thumbnail)
-          .setDescription(description)
+          .setDescription(description[0].toString())
           .setColor(color);
+        }else{
+          //is not an error
+          embed = new EmbedBuilder()
+          .setTitle(`${languageName} - Success!`)
+          .setThumbnail(thumbnail)
+          .setDescription(description[0].toString())
+          .setColor(color);
+        }
+
         modalInteraction.reply({ embeds: [embed] });
       });
 
@@ -154,6 +173,10 @@ client.on("interactionCreate", async (interaction) => {
     // console.log(`code: ${code}`);
 
     //set border colors
+    }catch (err) {
+      console.log('interaction failed.');
+      console.log(err);
+    }
   }
 
   if (interaction.commandName === "button") {

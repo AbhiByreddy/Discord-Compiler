@@ -18,13 +18,13 @@ const commands = [
                 type: ApplicationCommandOptionType.String,
                 choices: [
                     {
-                        name: 'java-script',
-                        value: 'JavaScript',
+                        name: 'JavaScript',
+                        value: 'javascript',
                         
                     },
                     {
-                        name: 'python',
-                        value: 'Python',
+                        name: 'Python',
+                        value: 'python',
                         
                     },
 
